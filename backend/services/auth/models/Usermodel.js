@@ -8,11 +8,13 @@ const UserSchema= new mongoose.Schema(
             unique:true
         },
     
- name:string,
- email:string,
- avatar:string,
+ name:String,
+ email:String,
+ avatar:String,
 },{
  timestamps:true
 });
 
-export default User= mongoose.model("User",UserSchema);
+const User= mongoose.model("User",UserSchema);
+
+export default User;
