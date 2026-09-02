@@ -3,6 +3,9 @@ import dotenv from "dotenv";
 import proxy from "express-http-proxy";
 import cookieParser from "cookie-parser";
 import cors from "cors";
+import getUserController from "./controller/getusercontroller.js";
+import authmiddleware from "./middleware/authusermiddleware.js";
+
 dotenv.config();
 
 const app = express();
@@ -13,8 +16,8 @@ app.use(cors({
     origin: process.env.FRONTEND_URL,  // Allow requests from the frontend URL
     credentials: true // Include credentials (cookies) in requests
 }))
-app.use("/auth",proxy(process.env.AUTH_SERVICE_URL)); // Proxy requests to the auth service
-
+app.use("/api/auth",proxy(process.env.AUTH_SERVICE_URL)); // Proxy requests to the auth service
+app.get("/api/me",authmiddleware,getUserController) // Get the current user information
 app.get("/",(req,res)=>{
     res.json({message:"gateway server is running"})
 })
