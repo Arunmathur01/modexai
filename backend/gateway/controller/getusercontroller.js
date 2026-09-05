@@ -3,7 +3,7 @@
 const getUserController = async (req, res) => {
 
     try{
-        return res.status(200).json({user:req.user})
+        return res.status(200).json(req.user)
 
     }
     catch(error){   
