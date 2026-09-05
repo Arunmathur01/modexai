@@ -5,6 +5,7 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import getUserController from "./controller/getusercontroller.js";
 import authmiddleware from "./middleware/authusermiddleware.js";
+import proxyHeaderWithUserId from "./utilis/proxyHeaderwithuserid.js";
 
 dotenv.config();
 
@@ -17,6 +18,7 @@ app.use(cors({
     credentials: true // Include credentials (cookies) in requests
 }))
 app.use("/api/auth",proxy(process.env.AUTH_SERVICE_URL)); // Proxy requests to the auth service
+app.use("/api/chat",authmiddleware,proxyHeaderWithUserId(process.env.CHAT_SERVICE_URL)); // Proxy requests to the chat service
 app.get("/api/me",authmiddleware,getUserController) // Get the current user information
 app.get("/",(req,res)=>{
     res.json({message:"gateway server is running"})
