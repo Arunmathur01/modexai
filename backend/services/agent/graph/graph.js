@@ -1,6 +1,6 @@
 import { StateGraph } from "@langchain/langgraph";
 import { agentState } from "./state.js";
-import { router } from "./router";
+import { router } from "./router.js";
 import { chatAgent } from "../agents/chat.agent.js";
 import { codingAgent } from "../agents/coding.agent.js";
 import { imageGenAgent } from "../agents/imageGen.agent.js";
@@ -20,7 +20,7 @@ workflow.addNode("search", searchAgent);
 workflow.addNode("ppt", pptAgent);
 // connect the nodes with edges to define the flow of the graph
 workflow.addEdge("__start__","router");
-workflow.addConditionalEdge("router",(state)=>{ // conditional edge to route to the appropriate agent based on the state
+workflow.addConditionalEdges("router",(state)=>{ // conditional edge to route to the appropriate agent based on the state
     switch(state.agent){
         case "chat":
             return "chat";
