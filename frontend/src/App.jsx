@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react'
-import Home from '../pages/Home.jsx'
-import getCurrentUser from '../features/getCurrentuser.js';
+import Home from './pages/Home.jsx'
+import getCurrentUser from './features/getCurrentuser.js';
 import {useDispatch} from 'react-redux'
-import { SetUserdata } from '../redux/userSlice.js'
+import { SetUserdata } from './redux/userSlice.js'
 
 const App = () => {
   const dispatch = useDispatch(); //useDispatch is a hook provided by react-redux that allows you to dispatch actions to the Redux store. In this case, it is used to dispatch the SetUserdata action to update the user data in the Redux store.

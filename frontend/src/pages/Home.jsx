@@ -1,11 +1,15 @@
 import React from 'react'
 import { signInWithPopup } from 'firebase/auth'
-import { auth, googleProvider } from '../utilis/firebase.js'
+import { auth, googleProvider } from'../utilis/firebase.js'
 import api from '../utilis/axios.js'
 import { FcGoogle } from "react-icons/fc";
 import {  useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { SetUserdata } from '../redux/userSlice.js'
+import SideBar from "../components/SideBar.jsx"
+import ChatBar from "../components/ChatBar.jsx"
+import PreviewBar from "../components/PreviewBar.jsx"
+
 
 
 function Home() {
@@ -31,9 +35,21 @@ function Home() {
         //console.log(data);
     }
     return (
+        <div className='h-screen flex bg-[#0d0f14] text-white overflow-hidden'>
+        <SideBar/>
+         <main className="flex-1 flex flex-col min-w-0">
+
+        <div className="flex-1 overflow-y-auto">
+          {/* Chat messages */}
+        </div>
+
+        <ChatBar />
+
+      </main>
+        <PreviewBar/>
+       {!userData &&<div className="fixed inset-0 z-50 flex items-center justify-center bg-black backdrop-blur">
         
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black backdrop-blur">
-            {!userData && <div className="w-85 bg-[#13151c] border border-white/8 p-7 rounded-2xl flex flex-col gap-5">
+           <div className="w-85 bg-[#13151c] border border-white/8 p-7 rounded-2xl flex flex-col gap-5">
                 <div className="flex flex-col gap-1">
                     <h2 className=' text-slate-100 text-[17px] font-semibold tracking-tight '>Welcome to ModexAi</h2>
                     <p className="text-[13px] text-slate-500">Please login to continue using the app</p>
@@ -45,11 +61,11 @@ function Home() {
                     Continue With Google
                 </button>
 
-            </div>}
+            </div>
 
            
-        </div>
-
+        </div>}
+</div>
     )
 }
 
