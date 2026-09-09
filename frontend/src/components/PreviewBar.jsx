@@ -74,7 +74,7 @@ function PreviewBar({ code = "" }) {
   }
 
   return (
-    <aside className="w-[420px] h-screen bg-[#111318] border-l border-gray-800 text-white flex flex-col">
+    <aside className="w-105 h-screen bg-[#111318] border-l border-gray-800 text-white flex flex-col">
 
       {/* Header */}
       <div className="h-14 px-4 border-b border-gray-800 flex items-center justify-between">
