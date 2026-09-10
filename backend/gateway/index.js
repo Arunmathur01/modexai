@@ -6,10 +6,12 @@ import cors from "cors";
 import getUserController from "./controller/getusercontroller.js";
 import authmiddleware from "./middleware/authusermiddleware.js";
 import proxyHeaderWithUserId from "./utilis/proxyHeaderwithuserid.js";
+import morgan from "morgan";
 
 dotenv.config();
 
 const app = express();
+app.use(morgan("dev"))
 
 app.use(express.json());
 app.use(cookieParser());// Parse cookies from incoming requests

@@ -7,11 +7,11 @@ export const chatAgent = async (state) => {
     const response = await llm.invoke([
         {
             "role": "system",
-            "prompt": systemPrompt
+            "content": systemPrompt
         },
         {
-            "role": "human",
-            "prompt": state.prompt
+            "role": "user",
+            "content": state.prompt
         }
     ])
     return {

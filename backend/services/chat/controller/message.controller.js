@@ -26,8 +26,8 @@ const getMessage = async(req,res)=>{
     //    const{ conversationId } = req.body
      const message = await Message.find({
         conversationId:req.params.conversationId
-     }).sort({updatedAt:-1})
-     return res.status(200).json({message:"get all message success",message})
+     })
+     return res.status(200).json(message)
     } catch (error) {
         return res.status(200).json({message:`get all message success ${error}`})
     }

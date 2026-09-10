@@ -7,7 +7,7 @@ import {  useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { SetUserdata } from '../redux/userSlice.js'
 import SideBar from "../components/SideBar.jsx"
-import ChatBar from "../components/ChatBar.jsx"
+import ChatBar from "../components/ChatArea.jsx"
 import PreviewBar from "../components/PreviewBar.jsx"
 
 
@@ -37,15 +37,7 @@ function Home() {
     return (
         <div className='h-screen flex bg-[#0d0f14] text-white overflow-hidden'>
         <SideBar/>
-         <main className="flex-1 flex flex-col min-w-0">
-
-        <div className="flex-1 overflow-y-auto">
-          {/* Chat messages */}
-        </div>
-
         <ChatBar />
-
-      </main>
         <PreviewBar/>
        {!userData &&<div className="fixed inset-0 z-50 flex items-center justify-center bg-black backdrop-blur">
         
