@@ -10,6 +10,8 @@ import {
 } from "lucide-react";
 
 const Welcome=()=> {
+
+   
   const features = [
     {
       icon: MessageSquare,
@@ -74,7 +76,8 @@ const Welcome=()=> {
           {/* Start Chat */}
           <button
             className="mt-8 inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-blue-600 hover:bg-blue-500 transition font-medium"
-          >
+         
+         >
             Start a conversation
             <ArrowRight size={18} />
             

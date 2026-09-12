@@ -1,11 +1,14 @@
 import React from 'react'
 import { useState } from 'react';
 import { Zap,MessageCircle,Search,Image,FileText,Presentation,Code,Paperclip,Mic,Send } from 'lucide-react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import sendMessage from '../features/sendMessage';
+import { addmessage } from '../redux/messageSlice';
 const ChatInput = () => {
   const [value,setValue]=useState("")
 const { selectedConversation } = useSelector(state => state.conversation)
+const {message}=useSelector(state=>state.message)
+const dispatch=useDispatch()
 const handlesendMessage = async (e) => {
   e.preventDefault();
 
@@ -15,9 +18,11 @@ const handlesendMessage = async (e) => {
     prompt: value.trim(),
     conversationId: selectedConversation?._id
   };
+  dispatch(addmessage({role:"user",content:value.trim()}))
+  setValue("")
 
   const data = await sendMessage(payload);
-
+ dispatch(addmessage({role:"assistant",content:data}))
   console.log(data);
 };
   return (
@@ -82,7 +87,7 @@ const handlesendMessage = async (e) => {
                  value={value}
                   placeholder="Ask anything..."
                   rows={1}
-                  className="flex-1 bg-transparent text-white placeholder-gray-500 outline-none resize-none px-2 py-2.5 max-h-32"
+                  className="flex-1 bg-transparent text-white placeholder-gray-500 outline-none resize-none px-2 py-2.5 max-h-32 overflow-y-auto  [scrollbar-none] [&::-webkit-scrollbar]:hidden"
                 />
       
                 {/* Mic */}

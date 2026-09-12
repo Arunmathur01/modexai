@@ -1,7 +1,10 @@
 import React from "react";
-
+import Markdown from 'react-markdown'
+import ReactMarkdown from 'react-markdown'
 const MessageBubble = ({ role, content }) => {
   const isUser = role === "user";
+  console.log("CONTENT:", content);
+console.log("TYPE:", typeof content);
 
   return (
     <div className={`flex ${isUser ? "justify-end" : "justify-start"}`}>
@@ -12,7 +15,10 @@ const MessageBubble = ({ role, content }) => {
             : "bg-white/4 border border-white/[0.07] text-slate-200 rounded-tl-sm"
         }`}
       >
-        {content}
+       <ReactMarkdown>
+  {content }
+</ReactMarkdown>
+       
       </div>
     </div>
   );

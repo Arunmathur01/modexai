@@ -14,6 +14,7 @@ const MessageList = () => {
   return (
     <div className="flex flex-col gap-4 px-6 py-6">
       {message?.map((msg, index) => (
+        
         <MessageBubble
           key={msg._id || index}
           role={msg?.role}

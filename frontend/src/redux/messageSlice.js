@@ -11,12 +11,14 @@ export const messageSlice = createSlice({
   reducers: {
     Setmessage: (state, action) => {
       state.message = action.payload //set the user data to the payload of the action because the payload will contain the user data
+    },
+    addmessage:(state,action)=>{
+      state.message.push(action.payload)
     }
-  
   },
 })
 
 
-export const { Setmessage } = messageSlice.actions
+export const { Setmessage ,addmessage} = messageSlice.actions
 
 export default messageSlice.reducer
