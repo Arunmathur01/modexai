@@ -1,18 +1,22 @@
 
 import axios from "axios"
 import { graph } from "../graph/graph.js"
+import { addMessage } from "../config/memoryAi.js"
 
 
 export const agent = async(req,res)=>{
     try {
-        const {conversationId,prompt}=req.body
+        const {conversationId,prompt,agent}=req.body
+        
       await axios.post(`${process.env.CHAT_SERVICE_URL}/save-message`,{
         conversationId,role:"user",content:prompt
       })
      const result = await graph.invoke({
-        prompt,conversationId
+        prompt,conversationId,agent
      })
    const response=result.aiResponse;
+   await addMessage(conversationId,"user",prompt)
+   await addMessage(conversationId,"assistant",response)
    await axios.post(`${process.env.CHAT_SERVICE_URL}/save-message`,{
         conversationId,role:"assistant",content:response
       })

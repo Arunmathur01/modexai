@@ -4,19 +4,36 @@ import { Zap,MessageCircle,Search,Image,FileText,Presentation,Code,Paperclip,Mic
 import { useDispatch, useSelector } from 'react-redux';
 import sendMessage from '../features/sendMessage';
 import { addmessage } from '../redux/messageSlice';
+import { createConversation } from '../features/createConversation';
+import { addconversation, SetselectedConversation, setupdateConversation } from '../redux/conversationSlice';
+import { updateConversation } from '../features/updateConversation';
 const ChatInput = () => {
+
+  const [selectedAgent,setselectedAgent]=useState("Auto")
+  
   const [value,setValue]=useState("")
 const { selectedConversation } = useSelector(state => state.conversation)
 const {message}=useSelector(state=>state.message)
 const dispatch=useDispatch()
 const handlesendMessage = async (e) => {
   e.preventDefault();
+let conversation=selectedConversation
+ if(!conversation){ 
+      const conv=await createConversation()
+    dispatch(SetselectedConversation(conv))
+dispatch(addconversation(conv))
+    conversation=conv
+    }
 
-  if (!value.trim()) return;
+    if(conversation.title=="New Chat"){
+      await updateConversation({id:conversation?._id,title:value.trim()})
+      dispatch(setupdateConversation({conversationId:conversation?._id,title:value.trim()}))
+    }
+ 
 
   const payload = {
     prompt: value.trim(),
-    conversationId: selectedConversation?._id
+    conversationId: conversation?._id,agent:selectedAgent.toLowerCase()
   };
   dispatch(addmessage({role:"user",content:value.trim()}))
   setValue("")
@@ -25,6 +42,16 @@ const handlesendMessage = async (e) => {
  dispatch(addmessage({role:"assistant",content:data}))
   console.log(data);
 };
+
+const agents = [
+  { name: "Auto", icon: Zap },
+  { name: "Chat", icon: MessageCircle },
+  { name: "Search", icon: Search },
+  { name: "Image", icon: Image },// in backend there is imageGen not image 
+  { name: "PDF", icon: FileText },
+  { name: "PPT", icon: Presentation },
+  { name: "Coding", icon: Code },
+];
   return (
     <div>
          <div className="w-full border-t border-gray-800 bg-[#111318] px-4 py-4">
@@ -32,40 +59,27 @@ const handlesendMessage = async (e) => {
             <div className="max-w-4xl mx-auto">
       
               {/* Quick Agent Options */}
-              <div className="flex items-center gap-2 mb-3 overflow-x-auto">
-                <button className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-gray-800 hover:bg-gray-700 text-sm text-gray-300 whitespace-nowrap">
-                  <Zap size={16} />
-                 Auto
-                </button>
-                <button className="flex items-center gap-2 px-3 py-1.5 rounded-lg hover:bg-gray-800 text-sm text-gray-400 hover:text-white whitespace-nowrap">
-                  <MessageCircle size={16} />
-                  Chat
-                </button>
-                <button className="flex items-center gap-2 px-3 py-1.5 rounded-lg hover:bg-gray-800 text-sm text-gray-400 hover:text-white whitespace-nowrap">
-                   <Search size={16} />
-                  Search
-                </button>
-      
-                <button className="flex items-center gap-2 px-3 py-1.5 rounded-lg hover:bg-gray-800 text-sm text-gray-400 hover:text-white whitespace-nowrap">
-                  <Image size={16} />
-                  Image
-                </button>
-      
-                <button className="flex items-center gap-2 px-3 py-1.5 rounded-lg hover:bg-gray-800 text-sm text-gray-400 hover:text-white whitespace-nowrap">
-                  <FileText size={16} />
-                  PDF
-                </button>
-      
-                <button className="flex items-center gap-2 px-3 py-1.5 rounded-lg hover:bg-gray-800 text-sm text-gray-400 hover:text-white whitespace-nowrap">
-                  <Presentation size={16} />
-                  PPT
-                </button>
-      
-                <button className="flex items-center gap-2 px-3 py-1.5 rounded-lg hover:bg-gray-800 text-sm text-gray-400 hover:text-white whitespace-nowrap">
-                  <Code size={16} />
-                  Code
-                </button>
-              </div>
+            <div className="flex items-center gap-2 mb-3 overflow-x-auto scrollbar-hide">
+  {agents.map((agent) => {
+    const Icon = agent.icon;
+    const isSelected = selectedAgent === agent.name;
+
+    return (
+      <button
+        key={agent.name}
+        onClick={() => setselectedAgent(agent.name)}
+        className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm whitespace-nowrap transition ${
+          isSelected
+            ? "bg-blue-600 text-white"
+            : "text-gray-400 hover:bg-gray-800 hover:text-white"
+        }`}
+      >
+        <Icon size={16} />
+        {agent.name}
+      </button>
+    );
+  })}
+</div>
       
               {/* Input */}
               <form

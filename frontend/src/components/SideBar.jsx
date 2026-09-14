@@ -16,9 +16,10 @@ import { addconversation, Setconversation, SetselectedConversation } from "../re
 import { createConversation } from "../features/createConversation.js";
 import logOut from "../features/logOut.js";
 import { SetUserdata } from "../redux/userSlice.js";
+import { addmessage, Setmessage } from "../redux/messageSlice.js";
 
 
-function SideBar() {
+function SideBar({onNewChat}) {
 
   const { conversation, selectedConversation } = useSelector(state => state.conversation)
   const {userData}=useSelector (state=>state.user)
@@ -79,7 +80,9 @@ const [imageError, setImageError] = useState(false);
         <button
           className={`w-full flex items-center justify-center gap-3 px-3 py-3 rounded-lg bg-blue-600 hover:bg-blue-700 transition ${!isOpen && "justify-center"
             }`}
-          onClick={handleCreateConversation}
+          onClick={  ()=> { dispatch(SetselectedConversation(null))
+           dispatch(Setmessage([]))
+            onNewChat()}}
         >
           <Plus size={20} />
 

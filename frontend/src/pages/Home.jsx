@@ -9,11 +9,12 @@ import { SetUserdata } from '../redux/userSlice.js'
 import SideBar from "../components/SideBar.jsx"
 import ChatBar from "../components/ChatArea.jsx"
 import PreviewBar from "../components/PreviewBar.jsx"
-
+import { useState } from 'react';
 
 
 function Home() {
 
+     const [showChat, setShowChat] = useState(false);
    const {userData} = useSelector(state => state.user);// it is used to get the user data from the redux store. The useSelector hook is provided by react-redux and it allows you to access the state of the redux store. In this case, it is used to get the user data from the user slice of the redux store. The userData variable will contain the user data if the user is logged in, otherwise it will be null.
    const dispatch = useDispatch();
 //    console.log(userData);
@@ -36,8 +37,12 @@ function Home() {
     }
     return (
         <div className='h-screen flex bg-[#0d0f14] text-white overflow-hidden'>
-        <SideBar/>
-        <ChatBar />
+         <SideBar onNewChat={() => setShowChat(true)} />
+
+      <ChatBar
+        showChat={showChat}
+        setShowChat={setShowChat}
+      />
         <PreviewBar/>
        {!userData &&<div className="fixed inset-0 z-50 flex items-center justify-center bg-black backdrop-blur">
         
