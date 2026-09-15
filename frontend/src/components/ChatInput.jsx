@@ -39,7 +39,7 @@ dispatch(addconversation(conv))
   setValue("")
 
   const data = await sendMessage(payload);
- dispatch(addmessage({role:"assistant",content:data}))
+ dispatch(addmessage({role:"assistant",content:data.answer,images:data.images}))
   console.log(data);
 };
 
@@ -47,7 +47,7 @@ const agents = [
   { name: "Auto", icon: Zap },
   { name: "Chat", icon: MessageCircle },
   { name: "Search", icon: Search },
-  { name: "Image", icon: Image },// in backend there is imageGen not image 
+  { name: "Image", icon: Image },// in backend there is image not image 
   { name: "PDF", icon: FileText },
   { name: "PPT", icon: Presentation },
   { name: "Coding", icon: Code },

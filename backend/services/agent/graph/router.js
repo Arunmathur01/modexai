@@ -64,7 +64,7 @@ You have exactly six agents:
    * Designing presentation content
    * Analyzing PowerPoint files
 
-5. imageGen
+5. image
 
    * Generating images
    * Creating images
@@ -109,7 +109,7 @@ The routing rules are:
 * Programming/software development task → coding
 * PowerPoint/presentation task → ppt
 * PDF task → pdf
-* Image generation/editing task → imageGen
+* Image generation/editing task → image
 * Current/latest/recent/web/internet information → search
 * General conversation or general knowledge → chat
 
@@ -154,7 +154,7 @@ User:
 "Generate an image of a futuristic city."
 
 Output:
-imageGen
+image
 
 Reason:
 The user wants an image generated.
@@ -285,7 +285,7 @@ chat
 search
 pdf
 ppt
-imageGen
+image
 coding
 
 Do NOT return:
@@ -340,7 +340,7 @@ User:
 "Generate a logo for my application."
 
 Output:
-imageGen
+image
 
 User:
 "What is the latest version of React?"

@@ -3,7 +3,7 @@ import { agentState } from "./state.js";
 import { router } from "./router.js";
 import { chatAgent } from "../agents/chat.agent.js";
 import { codingAgent } from "../agents/coding.agent.js";
-import { imageGenAgent } from "../agents/imageGen.agent.js";
+import { imageAgent } from "../agents/imageGen.agent.js";
 import { pdfAgent } from "../agents/pdf.agent.js";
 import { searchAgent } from "../agents/search.agent.js";
 import { pptAgent } from "../agents/ppt.agent.js";
@@ -14,7 +14,7 @@ const workflow = new StateGraph(agentState)
 workflow.addNode("router",router);
 workflow.addNode("chat", chatAgent);
 workflow.addNode("coding", codingAgent);
-workflow.addNode("imageGen", imageGenAgent);
+workflow.addNode("image", imageAgent);
 workflow.addNode("pdf", pdfAgent);
 workflow.addNode("search", searchAgent);
 workflow.addNode("ppt", pptAgent);
@@ -26,8 +26,8 @@ workflow.addConditionalEdges("router",(state)=>{ // conditional edge to route to
             return "chat";
         case "coding":
             return "coding";
-        case "imageGen":
-            return "imageGen";
+        case "image":
+            return "image";
         case "pdf":
             return "pdf";
         case "search":
@@ -42,7 +42,7 @@ workflow.addConditionalEdges("router",(state)=>{ // conditional edge to route to
     // conditional edge metadata to define the possible values of the agent state
     chat: "chat",
     coding: "coding",
-    imageGen: "imageGen",
+    image: "image",
     pdf: "pdf",
     search: "search",
     ppt: "ppt"
@@ -51,7 +51,7 @@ workflow.addConditionalEdges("router",(state)=>{ // conditional edge to route to
 workflow.addEdge("search","chat")
 workflow.addEdge("chat","__end__")
 workflow.addEdge("coding","__end__")
-workflow.addEdge("imageGen","__end__")
+workflow.addEdge("image","__end__")
 workflow.addEdge("pdf","__end__")
 workflow.addEdge("ppt","__end__")
 

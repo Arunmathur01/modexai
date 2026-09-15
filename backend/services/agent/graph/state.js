@@ -4,5 +4,7 @@ import {Annotation} from "@langchain/langgraph"
     prompt: Annotation(),
     aiResponse: Annotation(),
     agent: Annotation(),
-    conversationId:Annotation()
+    conversationId:Annotation(),
+    searchResults:Annotation(),
+    images:Annotation()
 })

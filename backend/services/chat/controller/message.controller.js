@@ -3,14 +3,15 @@ import Message from "../models/message.model.js"
 
 const saveMessage = async(req,res)=>{
     try{
-    const {conversationId,role,content}=req.body
+    const {conversationId,role,content,images}=req.body
     if(!conversationId || !role || !content){
         return res.status(400).json({message:"conversationId,role and content are required"})
     }
     const message = await Message.create({
         conversationId,
         role,
-        content
+        content,
+        images
     })
     return res.status(200).json({message:"Message created successfully",message})
     

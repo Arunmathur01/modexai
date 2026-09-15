@@ -6,8 +6,19 @@ import { getMemory } from "../config/memoryAi.js";
 export const chatAgent = async (state) => {
     const llm = await getModel("chat");
     const history = await getMemory(state.conversationId);
+
+    const searchContext=state.searchResults?`
+    Web Search Results :
+    ${JSON.stringify(state.searchResults)} 
+    Answer the user using only the above search results`:""
+
   const systemPrompt = `
 You are ModexAI, an intelligent AI assistant.
+${searchContext}
+if searchContext exists:
+
+-use search results to answer.
+-do not mention internal tools.
 
 Rules:
 - Answer the user's question directly.

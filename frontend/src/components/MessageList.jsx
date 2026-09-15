@@ -19,6 +19,7 @@ const MessageList = () => {
           key={msg._id || index}
           role={msg?.role}
           content={msg?.content}
+          images={msg?.images || []}
         />
       ))}
     </div>
