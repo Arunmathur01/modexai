@@ -39,7 +39,7 @@ dispatch(addconversation(conv))
   setValue("")
 
   const data = await sendMessage(payload);
- dispatch(addmessage({role:"assistant",content:data.answer,images:data.images}))
+ dispatch(addmessage({role:"assistant",content:data?.answer,images:data?.images}))
   console.log(data);
 };
 
@@ -86,13 +86,7 @@ const agents = [
                 onSubmit={handlesendMessage}
                 className="flex items-end gap-2 bg-[#191b22] border border-gray-700 rounded-2xl p-2 focus-within:border-gray-500 transition"
               >
-                {/* Attachment */}
-                <button
-                  type="button"
-                  className="p-2.5 rounded-xl hover:bg-gray-800 text-gray-400 hover:text-white transition"
-                >
-                  <Paperclip size={20} />
-                </button>
+               
       
                 {/* Textarea */}
                 <textarea
@@ -104,13 +98,13 @@ const agents = [
                   className="flex-1 bg-transparent text-white placeholder-gray-500 outline-none resize-none px-2 py-2.5 max-h-32 overflow-y-auto  [scrollbar-none] [&::-webkit-scrollbar]:hidden"
                 />
       
-                {/* Mic */}
+                {/* Mic
                 <button
                   type="button"
                   className="p-2.5 rounded-xl hover:bg-gray-800 text-gray-400 hover:text-white transition"
                 >
                   <Mic size={20} />
-                </button>
+                </button> */}
       
                 {/* Send */}
                 <button
