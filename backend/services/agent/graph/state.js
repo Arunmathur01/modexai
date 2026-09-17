@@ -6,5 +6,6 @@ import {Annotation} from "@langchain/langgraph"
     agent: Annotation(),
     conversationId:Annotation(),
     searchResults:Annotation(),
-    images:Annotation()
+    images:Annotation(),
+    codePreview:Annotation()
 })

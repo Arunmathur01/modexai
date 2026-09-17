@@ -14,11 +14,14 @@ export const messageSlice = createSlice({
     },
     addmessage:(state,action)=>{
       state.message.push(action.payload)
+    },
+    SetcodePreview:(state,action)=>{
+      state.codePreview=action.payload
     }
   },
 })
 
 
-export const { Setmessage ,addmessage} = messageSlice.actions
+export const { Setmessage ,addmessage,SetcodePreview} = messageSlice.actions
 
 export default messageSlice.reducer

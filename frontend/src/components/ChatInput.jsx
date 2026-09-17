@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { Zap,MessageCircle,Search,Image,FileText,Presentation,Code,Paperclip,Mic,Send } from 'lucide-react';
 import { useDispatch, useSelector } from 'react-redux';
 import sendMessage from '../features/sendMessage';
-import { addmessage } from '../redux/messageSlice';
+import { addmessage,SetcodePreview } from '../redux/messageSlice';
 import { createConversation } from '../features/createConversation';
 import { addconversation, SetselectedConversation, setupdateConversation } from '../redux/conversationSlice';
 import { updateConversation } from '../features/updateConversation';
@@ -28,6 +28,8 @@ dispatch(addconversation(conv))
     if(conversation.title=="New Chat"){
       await updateConversation({id:conversation?._id,title:value.trim()})
       dispatch(setupdateConversation({conversationId:conversation?._id,title:value.trim()}))
+
+         
     }
  
 
@@ -39,7 +41,9 @@ dispatch(addconversation(conv))
   setValue("")
 
   const data = await sendMessage(payload);
+  dispatch(SetcodePreview(data.codePreview||[]))
  dispatch(addmessage({role:"assistant",content:data?.answer,images:data?.images}))
+     
   console.log(data);
 };
 

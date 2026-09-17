@@ -3,7 +3,7 @@ import ChatInput from "./ChatInput";
 import ChatNav from "./ChatNav";
 import MessageList from "./MessageList";
 import { useDispatch, useSelector } from "react-redux";
-import { Setmessage } from "../redux/messageSlice";
+import { SetcodePreview, Setmessage } from "../redux/messageSlice";
 import getMessages from "../features/getMessages";
 import Welcome from "./Welcome";
 
@@ -24,6 +24,8 @@ if(selectedConversation.title=="New Chat"){
 }
         const data = await getMessages(selectedConversation._id);
         dispatch(Setmessage(data));
+        const latestcodePreview=[...data].reverse().find(msg=>msg.codePreview && msg.codePreview.length>0)
+        dispatch(SetcodePreview(latestcodePreview.codePreview||[]))
       }
     };
 
