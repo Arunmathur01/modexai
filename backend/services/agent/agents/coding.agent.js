@@ -40,11 +40,12 @@ Rules:
 -smoth scroller
 -hover and other effects
 -single page unless user ask otherwise
+-for images always use real unplash images never return placeholder
 Return ONLY valid JSON.
 schema:
 
 {
-  "description": "Short description",
+  "description": " description and explanation about code ",
   "files": [
     {
       "name": "index.html",
