@@ -11,6 +11,19 @@ const UserSchema= new mongoose.Schema(
  name:String,
  email:String,
  avatar:String,
+ plan:{
+    type:String,
+    default:"Free"
+ },
+ credits:{
+    type:Number,
+    default:100
+ },
+ totalcredits:{
+    type:Number,
+    default:100
+ },
+ planExpiresAt:Date
 },{
  timestamps:true
 });
