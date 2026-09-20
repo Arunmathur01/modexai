@@ -97,6 +97,7 @@ For example:
 User:
 "Explain what React Query is"
 
+
                 ↓
 
           Router Agent
@@ -104,9 +105,11 @@ User:
                 ↓
 
               chat
+              
 Another example:
 User:
 "Create a responsive landing page using React and Tailwind"
+
 
                 ↓
 
@@ -115,9 +118,11 @@ User:
                 ↓
 
              coding
+             
 Another:
 User:
 "Generate a PowerPoint presentation about Kubernetes"
+
 
                 ↓
 
@@ -126,9 +131,12 @@ User:
                 ↓
 
               ppt
+
+              
 Another:
 User:
 "What is the latest React version?"
+
 
                 ↓
 
@@ -137,6 +145,9 @@ User:
                 ↓
 
              search
+
+
+             
 The router returns only the required agent name:
 chat
 search
@@ -273,6 +284,8 @@ It can handle:
 - Backend development
 Generated code can be displayed in a dedicated code preview interface.
 Example:
+
+
 User Request
      ↓
 Coding Agent
@@ -291,6 +304,8 @@ Code Preview
 📄 PDF Agent
 The PDF Agent converts AI-generated structured content into PDF documents.
 The workflow:
+
+
 User Request
      ↓
 PDF Agent
@@ -304,6 +319,8 @@ PDF Buffer
 AWS S3
      ↓
 Signed Download URL
+
+
 Generated PDFs include structured sections such as:
 - Title
 - Introduction
@@ -327,6 +344,8 @@ Generated presentations can contain:
 - Slide numbering
 - ModeXAI footer
 Workflow:
+
+
 User Request
      ↓
 PPT Agent
@@ -341,9 +360,14 @@ AWS S3
      ↓
 Signed Download URL
 
+
+
 🎨 Image Generation Agent
 The Image Generation Agent converts user prompts into AI-generated images.
 Workflow:
+
+
+
 User Prompt
      ↓
 Image Agent
@@ -359,6 +383,8 @@ AWS S3
 Signed URL
      ↓
 Frontend
+
+
 Images are stored in AWS S3 instead of keeping them directly on the application server.
 
 
@@ -375,6 +401,8 @@ The application:
 4. Generates a signed URL
 5. Sends the URL to the frontend
 Example:
+
+
 Application
      ↓
 Buffer
@@ -384,6 +412,9 @@ S3 Upload
 Object Storage
      ↓
 Signed URL
+
+
+
 Signed URLs provide temporary access to generated files.
 
 
@@ -397,6 +428,8 @@ Pro	₹499	1500	30 Days
 
 
 Payment flow:
+
+
 User selects plan
        ↓
 Create Order
@@ -414,13 +447,18 @@ Payment marked as Paid
 Update User Plan
        ↓
 Add Credits
+
+
+
 Payment information is stored in MongoDB.
 
 🔐 Payment Security
 The frontend sends only the selected plan ID:
+
 {
   "plan": "starter"
 }
+
 The backend determines:
 Plan
 Price
@@ -441,6 +479,8 @@ It can be used for:
 - Cached data
 - Fast access to frequently used information
 Architecture:
+
+
 Application
      ↓
    Redis
@@ -451,6 +491,9 @@ Fast temporary data
 ModeXAI supports authenticated API access.
 The API Gateway validates the authenticated user and forwards the user identity to internal services.
 Example:
+
+
+
 Frontend
    ↓
 API Gateway
@@ -460,11 +503,16 @@ Authentication Middleware
 User ID
    ↓
 Backend Service
+
+
 Internal services can receive the authenticated user ID through:
 x-user-id
 
 🗂️ Project Structure
 A simplified project structure:
+
+
+
 ModeXAI/
 │
 ├── frontend/
@@ -574,6 +622,9 @@ MongoDB
 
 🔄 Overall Request Flow
 A typical AI request follows this architecture:
+
+
+
                     User
                      │
                      ▼
@@ -640,15 +691,3 @@ This project is developed for learning, experimentation, and portfolio purposes.
 Arun Mathur
 
 
-Full-Stack Developer | MERN | AI Agents | LangChain | LangGraph
-Technologies
-React.js
-Node.js
-Express.js
-MongoDB
-Redis
-LangChain
-LangGraph
-AWS S3
-Docker
-Razorpay
