@@ -7,12 +7,12 @@ import { addMessage } from "../config/memoryAi.js"
 export const agent = async(req,res)=>{
     try {
         const {conversationId,prompt,agent}=req.body
-        
+        const userId=req.headers["x-user-id"]
       await axios.post(`${process.env.CHAT_SERVICE_URL}/save-message`,{
         conversationId,role:"user",content:prompt
       })
      const result = await graph.invoke({
-        prompt,conversationId,agent
+        prompt,conversationId,agent,userId
      })
      console.log(result)
    

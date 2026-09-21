@@ -1,8 +1,10 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import MessageBubble from "./MessageBubble";
+import AILoader from "./loadingAi.jsx";
+import { useEffect,useRef } from "react";
 
-const MessageList = () => {
+const MessageList = ({ isLoading }) => {
   const { selectedConversation } = useSelector(
     state => state.conversation
   );
@@ -10,6 +12,17 @@ const MessageList = () => {
   const { message } = useSelector(
     state => state.message
   );
+
+  const bottomRef = useRef(null);
+
+  // Auto scroll to bottom
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({
+      behavior: "smooth",
+      block: "end",
+    });
+  }, [message, isLoading]);
+
 
   return (
     <div className="flex flex-col gap-4 px-6 py-6">
@@ -22,6 +35,8 @@ const MessageList = () => {
           images={msg?.images || []}
         />
       ))}
+       {isLoading && <AILoader />}
+<div ref={bottomRef} />
     </div>
   );
 };

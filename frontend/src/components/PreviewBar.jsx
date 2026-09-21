@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+
 import {
   X,
   Play,
@@ -8,13 +9,21 @@ import {
   Copy,
   Check,
 } from "lucide-react";
+
 import { useSelector } from "react-redux";
 
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
+import {
+  Prism as SyntaxHighlighter,
+} from "react-syntax-highlighter";
+
+import {
+  oneDark,
+} from "react-syntax-highlighter/dist/esm/styles/prism";
 
 function PreviewBar() {
-  const { codePreview = [] } = useSelector((state) => state.message);
+  const { codePreview = [] } = useSelector(
+    (state) => state.message
+  );
 
   const [isOpen, setIsOpen] = useState(true);
   const [activeTab, setActiveTab] = useState("preview");
@@ -22,10 +31,40 @@ function PreviewBar() {
   const [output, setOutput] = useState("");
   const [copied, setCopied] = useState(false);
 
+  const [isMobile, setIsMobile] = useState(false);
+
   const iframeRef = useRef(null);
 
   // ==========================================
-  // Latest generated code
+  // MOBILE DETECTION
+  // ==========================================
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia(
+      "(max-width: 767px)"
+    );
+
+    const handleChange = (event) => {
+      setIsMobile(event.matches);
+    };
+
+    setIsMobile(mediaQuery.matches);
+
+    mediaQuery.addEventListener(
+      "change",
+      handleChange
+    );
+
+    return () => {
+      mediaQuery.removeEventListener(
+        "change",
+        handleChange
+      );
+    };
+  }, []);
+
+  // ==========================================
+  // LATEST GENERATED CODE
   // ==========================================
 
   const latestCode =
@@ -36,23 +75,26 @@ function PreviewBar() {
   const files = latestCode?.files || [];
 
   // ==========================================
-  // Find important files
+  // FIND IMPORTANT FILES
   // ==========================================
 
   const htmlFile = files.find(
-    (file) => file.name?.toLowerCase() === "index.html"
+    (file) =>
+      file.name?.toLowerCase() === "index.html"
   );
 
   const cssFile = files.find(
-    (file) => file.name?.toLowerCase() === "style.css"
+    (file) =>
+      file.name?.toLowerCase() === "style.css"
   );
 
   const jsFile = files.find(
-    (file) => file.name?.toLowerCase() === "script.js"
+    (file) =>
+      file.name?.toLowerCase() === "script.js"
   );
 
   // ==========================================
-  // Get language from file extension
+  // GET LANGUAGE
   // ==========================================
 
   const getLanguage = (fileName = "") => {
@@ -62,86 +104,67 @@ function PreviewBar() {
       ?.toLowerCase();
 
     const languages = {
-      // Web
       html: "html",
       htm: "html",
+
       css: "css",
       scss: "scss",
       sass: "scss",
       less: "less",
 
-      // JavaScript
       js: "javascript",
       mjs: "javascript",
       cjs: "javascript",
       jsx: "jsx",
 
-      // TypeScript
       ts: "typescript",
       tsx: "tsx",
 
-      // Python
       py: "python",
       pyw: "python",
 
-      // C
       c: "c",
       h: "c",
 
-      // C++
       cpp: "cpp",
       cc: "cpp",
       cxx: "cpp",
       hpp: "cpp",
       hh: "cpp",
 
-      // Java
       java: "java",
 
-      // Kotlin
       kt: "kotlin",
       kts: "kotlin",
 
-      // C#
       cs: "csharp",
 
-      // Go
       go: "go",
 
-      // Rust
       rs: "rust",
 
-      // PHP
       php: "php",
 
-      // Ruby
       rb: "ruby",
 
-      // Swift
       swift: "swift",
 
-      // Dart
       dart: "dart",
 
-      // Shell
       sh: "bash",
       bash: "bash",
       zsh: "bash",
 
-      // SQL
       sql: "sql",
 
-      // Data
       json: "json",
       yaml: "yaml",
       yml: "yaml",
       xml: "markup",
 
-      // Markdown
       md: "markdown",
       markdown: "markdown",
 
-      // Other languages
       r: "r",
       lua: "lua",
       perl: "perl",
@@ -154,7 +177,6 @@ function PreviewBar() {
       objectivec: "objectivec",
       m: "objectivec",
 
-      // GraphQL
       graphql: "graphql",
       gql: "graphql",
     };
@@ -163,7 +185,7 @@ function PreviewBar() {
   };
 
   // ==========================================
-  // Generate preview HTML
+  // GENERATE PREVIEW HTML
   // ==========================================
 
   const generatePreview = () => {
@@ -193,7 +215,7 @@ function PreviewBar() {
     let html = htmlFile.content;
 
     // ==========================================
-    // Remove external CSS reference
+    // REMOVE EXTERNAL CSS
     // ==========================================
 
     html = html.replace(
@@ -202,7 +224,7 @@ function PreviewBar() {
     );
 
     // ==========================================
-    // Remove external JS reference
+    // REMOVE EXTERNAL JS
     // ==========================================
 
     html = html.replace(
@@ -211,7 +233,7 @@ function PreviewBar() {
     );
 
     // ==========================================
-    // Inject CSS
+    // INJECT CSS
     // ==========================================
 
     if (cssFile?.content) {
@@ -219,24 +241,24 @@ function PreviewBar() {
         html = html.replace(
           "</head>",
           `
-<style>
-${cssFile.content}
-</style>
-</head>
-`
+            <style>
+              ${cssFile.content}
+            </style>
+          </head>
+          `
         );
       } else {
         html = `
-<style>
-${cssFile.content}
-</style>
-${html}
-`;
+          <style>
+            ${cssFile.content}
+          </style>
+          ${html}
+        `;
       }
     }
 
     // ==========================================
-    // Inject JavaScript
+    // INJECT JAVASCRIPT
     // ==========================================
 
     if (jsFile?.content) {
@@ -244,18 +266,18 @@ ${html}
         html = html.replace(
           "</body>",
           `
-<script>
-${jsFile.content}
-</script>
-</body>
-`
+            <script>
+              ${jsFile.content}
+            </script>
+          </body>
+          `
         );
       } else {
         html += `
-<script>
-${jsFile.content}
-</script>
-`;
+          <script>
+            ${jsFile.content}
+          </script>
+        `;
       }
     }
 
@@ -263,7 +285,7 @@ ${jsFile.content}
   };
 
   // ==========================================
-  // Run code
+  // RUN CODE
   // ==========================================
 
   const runCode = () => {
@@ -277,7 +299,7 @@ ${jsFile.content}
   };
 
   // ==========================================
-  // Automatically update preview
+  // AUTOMATICALLY UPDATE PREVIEW
   // ==========================================
 
   useEffect(() => {
@@ -289,7 +311,7 @@ ${jsFile.content}
   }, [codePreview]);
 
   // ==========================================
-  // Refresh preview
+  // REFRESH PREVIEW
   // ==========================================
 
   const refreshPreview = () => {
@@ -307,7 +329,7 @@ ${jsFile.content}
   };
 
   // ==========================================
-  // Copy selected file
+  // COPY SELECTED FILE
   // ==========================================
 
   const copyCode = async () => {
@@ -329,22 +351,85 @@ ${jsFile.content}
   };
 
   // ==========================================
-  // Currently selected file
+  // CURRENT FILE
   // ==========================================
 
   const selectedFile =
-    files.find((file) => file.name === activeFile) ||
-    files[0];
+    files.find(
+      (file) => file.name === activeFile
+    ) || files[0];
 
   // ==========================================
-  // Closed preview bar
+  // NO GENERATED CODE
   // ==========================================
 
-  if (!isOpen) {
+  if (!codePreview.length) {
+    return null;
+  }
+
+ // ==========================================
+// MOBILE VIEW CODE BUTTON
+// ==========================================
+
+if (isMobile && !isOpen) {
+  return (
+    <button
+  onClick={() => setIsOpen(true)}
+  className="
+    fixed
+    top-3
+    right-3
+    z-150
+
+    w-7
+    h-7
+
+    flex
+    items-center
+    justify-center
+
+    rounded-md
+    bg-blue-600
+    hover:bg-blue-700
+
+    text-white
+    shadow-md
+    transition
+    active:scale-95
+  "
+  title="View Code"
+>
+  <Code2 size={13} />
+</button>
+  );
+}
+  // ==========================================
+  // DESKTOP CLOSED PREVIEW BAR
+  // ==========================================
+
+  if (!isMobile && !isOpen) {
     return (
       <button
         onClick={() => setIsOpen(true)}
-        className="h-screen w-12 bg-[#111318] border-l border-gray-800 flex items-center justify-center text-gray-400 hover:text-white hover:bg-gray-900 transition"
+        className="
+          h-screen
+          w-12
+
+          bg-[#111318]
+          border-l
+          border-gray-800
+
+          flex
+          items-center
+          justify-center
+
+          text-gray-400
+          hover:text-white
+          hover:bg-gray-900
+
+          transition
+        "
+        title="Open code preview"
       >
         <Monitor size={20} />
       </button>
@@ -352,59 +437,116 @@ ${jsFile.content}
   }
 
   // ==========================================
-  // No generated code
+  // PREVIEW BAR
   // ==========================================
 
-  if (!codePreview.length) {
-    return null;
-  }
-
   return (
-    <aside className="w-112.5 h-screen bg-[#111318] border-l border-gray-800 text-white flex flex-col">
+    <aside
+      className={`
+        bg-[#111318]
+        border-l
+        border-gray-800
+        text-white
+        flex
+        flex-col
 
+        ${
+          isMobile
+            ? `
+              fixed
+              inset-0
+              z-140
+              w-full
+              h-full
+            `
+            : `
+              relative
+              w-112.5
+              h-screen
+              shrink-0
+            `
+        }
+      `}
+    >
       {/* ==========================================
           HEADER
       ========================================== */}
 
-      <div className="h-14 px-4 border-b border-gray-800 flex items-center justify-between shrink-0">
+      <div
+        className="
+          h-14
+          px-3
+          sm:px-4
+
+          border-b
+          border-gray-800
+
+          flex
+          items-center
+          justify-between
+
+          shrink-0
+        "
+      >
+        {/* Title */}
 
         <div className="flex items-center gap-2 min-w-0">
-
           <Code2
             size={19}
             className="text-blue-500 shrink-0"
           />
 
-          <span className="font-semibold truncate">
+          <span className="font-semibold truncate text-sm sm:text-base">
             {latestCode?.title || "Code Preview"}
           </span>
-
         </div>
 
-        <div className="flex items-center gap-1">
+        {/* Actions */}
 
-          {/* Preview button */}
+        <div className="flex items-center gap-1 shrink-0">
+
+          {/* Preview */}
 
           <button
             onClick={() => setActiveTab("preview")}
-            className={`px-3 py-1.5 rounded-md text-sm transition ${
-              activeTab === "preview"
-                ? "bg-blue-600 text-white"
-                : "text-gray-500 hover:text-gray-300"
-            }`}
+            className={`
+              px-2
+              sm:px-3
+              py-1.5
+              rounded-md
+              text-xs
+              sm:text-sm
+              transition
+
+              ${
+                activeTab === "preview"
+                  ? "bg-blue-600 text-white"
+                  : "text-gray-500 hover:text-gray-300"
+              }
+            `}
           >
             Preview
           </button>
 
-          {/* Code button */}
+          {/* Code */}
 
           <button
             onClick={() => setActiveTab("code")}
-            className={`px-3 py-1.5 rounded-md text-sm transition ${
-              activeTab === "code"
-                ? "bg-blue-600 text-white"
-                : "text-gray-500 hover:text-gray-300"
-            }`}
+            className={`
+              px-2
+              sm:px-3
+              py-1.5
+              rounded-md
+              text-xs
+              sm:text-sm
+              transition
+
+              ${
+                activeTab === "code"
+                  ? "bg-blue-600 text-white"
+                  : "text-gray-500 hover:text-gray-300"
+              }
+            `}
           >
             Code
           </button>
@@ -414,14 +556,19 @@ ${jsFile.content}
           <button
             onClick={() => setIsOpen(false)}
             title="Close"
-            className="p-2 rounded-lg hover:bg-gray-800 text-gray-400 hover:text-white transition"
+            className="
+              p-2
+              rounded-lg
+              hover:bg-gray-800
+              text-gray-400
+              hover:text-white
+              transition
+            "
           >
             <X size={19} />
           </button>
-
         </div>
       </div>
-
 
       {/* ==========================================
           CONTENT
@@ -429,13 +576,12 @@ ${jsFile.content}
 
       <div className="flex-1 min-h-0 overflow-hidden">
 
-        {/* ==========================================
+        {/* ========================================
             PREVIEW
-        ========================================== */}
+        ======================================== */}
 
         {activeTab === "preview" && (
           <div className="relative w-full h-full bg-white">
-
             <iframe
               ref={iframeRef}
               title="Code Preview"
@@ -443,95 +589,152 @@ ${jsFile.content}
               sandbox="allow-scripts allow-forms"
               className="w-full h-full border-0"
             />
-
           </div>
         )}
 
-
-        {/* ==========================================
+        {/* ========================================
             CODE
-        ========================================== */}
+        ======================================== */}
 
         {activeTab === "code" && (
           <div className="h-full flex flex-col">
 
-            {/* ==========================================
-                FILE TABS
-            ========================================== */}
+            {/* FILE TABS */}
 
-            <div className="h-11 flex items-center border-b border-gray-800 bg-[#0d0f14] overflow-x-auto shrink-0">
-
+            <div
+              className="
+                h-11
+                flex
+                items-center
+                border-b
+                border-gray-800
+                bg-[#0d0f14]
+                overflow-x-auto
+                shrink-0
+              "
+            >
               {files.map((file) => (
                 <button
                   key={file.name}
                   onClick={() =>
                     setActiveFile(file.name)
                   }
-                  className={`px-4 h-full text-xs font-mono whitespace-nowrap border-r border-gray-800 transition ${
-                    activeFile === file.name
-                      ? "bg-[#1e293b] text-white border-t-2 border-t-blue-500"
-                      : "text-gray-500 hover:text-gray-300 hover:bg-gray-900"
-                  }`}
+                  className={`
+                    px-4
+                    h-full
+                    text-xs
+                    font-mono
+                    whitespace-nowrap
+                    border-r
+                    border-gray-800
+                    transition
+
+                    ${
+                      activeFile === file.name
+                        ? "bg-[#1e293b] text-white border-t-2 border-t-blue-500"
+                        : "text-gray-500 hover:text-gray-300 hover:bg-gray-900"
+                    }
+                  `}
                 >
                   {file.name}
                 </button>
               ))}
-
             </div>
 
+            {/* CODE HEADER */}
 
-            {/* ==========================================
-                CODE HEADER
-            ========================================== */}
-
-            <div className="h-10 px-4 flex items-center justify-between bg-[#0d0f14] border-b border-gray-800 shrink-0">
-
-              <div className="flex items-center gap-2">
-
-                <span className="text-xs text-gray-500 font-mono">
+            <div
+              className="
+                h-10
+                px-3
+                sm:px-4
+                flex
+                items-center
+                justify-between
+                bg-[#0d0f14]
+                border-b
+                border-gray-800
+                shrink-0
+              "
+            >
+              <div className="flex items-center gap-2 min-w-0">
+                <span className="text-xs text-gray-500 font-mono truncate">
                   {selectedFile?.name || "code"}
                 </span>
 
-                <span className="text-[10px] px-2 py-0.5 rounded bg-gray-800 text-gray-400 uppercase">
-                  {getLanguage(selectedFile?.name)}
+                <span
+                  className="
+                    hidden
+                    sm:inline-block
+                    text-[10px]
+                    px-2
+                    py-0.5
+                    rounded
+                    bg-gray-800
+                    text-gray-400
+                    uppercase
+                  "
+                >
+                  {getLanguage(
+                    selectedFile?.name
+                  )}
                 </span>
-
               </div>
 
-
-              {/* Copy button */}
+              {/* Copy */}
 
               <button
                 onClick={copyCode}
-                className="flex items-center gap-1.5 px-2 py-1 rounded-md text-xs text-gray-400 hover:text-white hover:bg-gray-800 transition"
+                className="
+                  flex
+                  items-center
+                  gap-1.5
+                  px-2
+                  py-1
+                  rounded-md
+                  text-xs
+                  text-gray-400
+                  hover:text-white
+                  hover:bg-gray-800
+                  transition
+                  shrink-0
+                "
                 title="Copy code"
               >
-
                 {copied ? (
                   <>
                     <Check size={14} />
-                    Copied
+                    <span className="hidden sm:inline">
+                      Copied
+                    </span>
                   </>
                 ) : (
                   <>
                     <Copy size={14} />
-                    Copy
+                    <span className="hidden sm:inline">
+                      Copy
+                    </span>
                   </>
                 )}
-
               </button>
-
             </div>
 
+            {/* SYNTAX HIGHLIGHTED CODE */}
 
-            {/* ==========================================
-                SYNTAX HIGHLIGHTED CODE
-            ========================================== */}
+            <div
+              className="
+                flex-1
+                min-h-0
+                overflow-auto
+                bg-[#0d1117]
 
-            <div className="flex-1 min-h-0 overflow-auto bg-[#0d1117] [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-gray-700 [&::-webkit-scrollbar-thumb]:rounded-full">
-
+                [&::-webkit-scrollbar]:w-1.5
+                [&::-webkit-scrollbar-track]:bg-transparent
+                [&::-webkit-scrollbar-thumb]:bg-gray-700
+                [&::-webkit-scrollbar-thumb]:rounded-full
+              "
+            >
               {selectedFile?.content ? (
-
                 <SyntaxHighlighter
                   language={getLanguage(
                     selectedFile.name
@@ -564,29 +767,35 @@ ${jsFile.content}
                 >
                   {selectedFile.content}
                 </SyntaxHighlighter>
-
               ) : (
-
                 <div className="p-5 text-gray-500 font-mono text-sm">
                   // No code available
                 </div>
-
               )}
-
             </div>
-
           </div>
         )}
-
       </div>
-
 
       {/* ==========================================
           FOOTER
       ========================================== */}
 
-      <div className="h-14 border-t border-gray-800 px-4 flex items-center justify-between shrink-0">
+      <div
+        className="
+          h-14
+          border-t
+          border-gray-800
+          px-3
+          sm:px-4
 
+          flex
+          items-center
+          justify-between
+
+          shrink-0
+        "
+      >
         <span className="text-xs text-gray-500">
           {files.length > 0
             ? `${files.length} files`
@@ -601,7 +810,14 @@ ${jsFile.content}
             <button
               onClick={refreshPreview}
               title="Refresh Preview"
-              className="p-2 rounded-lg text-gray-400 hover:text-white hover:bg-gray-800 transition"
+              className="
+                p-2
+                rounded-lg
+                text-gray-400
+                hover:text-white
+                hover:bg-gray-800
+                transition
+              "
             >
               <Maximize2 size={16} />
             </button>
@@ -611,16 +827,27 @@ ${jsFile.content}
 
           <button
             onClick={runCode}
-            className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg text-sm font-medium transition"
+            className="
+              flex
+              items-center
+              gap-2
+              px-3
+              sm:px-4
+              py-2
+              bg-blue-600
+              hover:bg-blue-700
+              rounded-lg
+              text-xs
+              sm:text-sm
+              font-medium
+              transition
+            "
           >
             <Play size={15} />
             Run
           </button>
-
         </div>
-
       </div>
-
     </aside>
   );
 }

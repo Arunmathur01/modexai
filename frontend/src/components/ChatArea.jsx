@@ -8,6 +8,7 @@ import getMessages from "../features/getMessages";
 import Welcome from "./Welcome";
 
 function ChatBar({ showChat, setShowChat }) {
+   const [isLoading, setIsLoading] = useState(false);
   const { selectedConversation } = useSelector(
     (state) => state.conversation
   );
@@ -40,10 +41,11 @@ if(selectedConversation.title=="New Chat"){
           <ChatNav />
 
           <div className="flex-1 min-h-0 overflow-y-auto [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-gray-800 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb:hover]:bg-gray-700">
-            <MessageList />
+            <MessageList isLoading={isLoading}/>
           </div>
 
-          <ChatInput />
+          <ChatInput isLoading={isLoading}
+            setIsLoading={setIsLoading}/>
         </>
       ) : (
         <Welcome

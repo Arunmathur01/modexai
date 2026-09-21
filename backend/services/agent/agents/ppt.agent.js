@@ -3,7 +3,7 @@ import { getModel } from "../config/llm.model.js"
 import { generatePpt } from "../utilis/genrateppt.js"
 import { getFroms3 } from "../utilis/getFroms3.js"
 import { uploadToS3 } from "../utilis/uploadToS3.js"
-
+import deductCredits from "../utilis/creditdeduction.js";
 export const pptAgent = async (state) => {
 
     try {
@@ -107,7 +107,7 @@ ${state.prompt}`
         const res = await llm.invoke(prompt)
 
         const data = JSON.parse(res.content)
-
+ await deductCredits(state.userId,"ppt")
         const pptBuffer = await generatePpt(data)
 
         const filename = `ppt-${Date.now()}.pptx`

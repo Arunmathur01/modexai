@@ -22,7 +22,7 @@ app.use(cors({
 app.use("/api/auth",proxy(process.env.AUTH_SERVICE_URL)); // Proxy requests to the auth service
 app.use("/api/chat",authmiddleware,proxyHeaderWithUserId(process.env.CHAT_SERVICE_URL)); // Proxy requests to the chat service
 app.use("/api/billing",authmiddleware,proxyHeaderWithUserId(process.env.BILLING_SERVICE_URL)); // Proxy requests to the chat service
-app.use("/api/agent",authmiddleware,proxy(process.env.AGENT_SERVICE_URL)); // Proxy requests to the agent service
+app.use("/api/agent",authmiddleware,proxyHeaderWithUserId(process.env.AGENT_SERVICE_URL)); // Proxy requests to the agent service
 app.get("/api/me",authmiddleware,getUserController) // Get the current user information
 app.get("/",(req,res)=>{
     res.json({message:"gateway server is running"})

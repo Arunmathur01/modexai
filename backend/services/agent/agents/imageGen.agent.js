@@ -2,7 +2,7 @@ import axios from "axios";
 import { getModel } from "../config/llm.model.js";
 import { uploadToS3 } from "../utilis/uploadToS3.js";
 import { getFroms3 } from "../utilis/getFroms3.js";
-
+import deductCredits from "../utilis/creditdeduction.js";
 export const imageAgent = async (state) => {
   try {
     
@@ -139,7 +139,7 @@ ${state.prompt}
       responseType: "arraybuffer",
     });
 
-    
+     await deductCredits(state.userId,"image")
   
 
   

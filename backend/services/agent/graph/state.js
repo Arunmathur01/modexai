@@ -7,5 +7,6 @@ import {Annotation} from "@langchain/langgraph"
     conversationId:Annotation(),
     searchResults:Annotation(),
     images:Annotation(),
-    codePreview:Annotation()
+    codePreview:Annotation(),
+    userId:Annotation()
 })
